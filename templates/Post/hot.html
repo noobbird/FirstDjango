@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/core.js"></script>
+
+    <title>Title</title>
+    <style>
+        th,td{text-align: center}
+    </style>
+</head>
+<h1>Hot page</h1>
+<body>
+
+<!--bootstrap：搜索框 -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input id="box" type="text" class="form-control" placeholder="请输入歌名">
+                <span class="input-group-btn">
+                    <button id="su" class="btn btn-primary">搜索</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <table id = "main_table" class="table">
+    <thead>
+    <tr>
+        <th>
+            序号
+        </th>
+        <th >
+            歌名
+        </th>
+        <th >
+           歌手
+        </th>
+        <th >
+            上次评论数
+        </th>
+        <th >
+            评论数
+        <th >
+           专辑
+        </th>
+        <th >
+            更新时间
+        </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</div>
+
+<script>
+    //页面载入完成添加表格数据
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/api/hot",
+            data: {
+                singer_name: "蔡依林",
+            },
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var row = "<tr>"+
+                            "<td>" + (i+1) +"<td>"+
+                            "<td>" + item.song_name +"<td>"+
+                            "<td>" + item.singer_name +"<td>"+
+                            "<td>" + item.comment_total +"<td>"+
+                            "<td>" + item.last_comment_total +"<td>"+
+                            "<td>" + item.album_name +"<td>"+
+                            "<td>" + item.update_time +"<td>"+
+                            "<tr>"
+
+                    $("#main_table tbody").append(row);
+                })
+
+            }
+
+        })
+    })
+
+</script>
+</body>
+
+</html>
