@@ -2,9 +2,9 @@
 # Date: 2018/10/6
 import requests
 import re
-from Post import db
+import db
 import json
-from Post import crypt
+import crypt
 from lxml import etree
 home_url = 'https://music.163.com/artist?id=%d'
 headers = {
@@ -79,6 +79,7 @@ def search(key_word):
 	data = crypt.get_postData(params%key_word)
 	headers["Content-Type"]= "application/x-www-form-urlencoded"
 	r = requests.post(url, data = data, headers = headers)
+	print(r.text)
 	return r.text
 
 def update(singer_id):
