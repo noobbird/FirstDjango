@@ -4,7 +4,7 @@ import requests
 import re
 from Post import db
 import json
-import crypt
+from Post import crypt
 from lxml import etree
 home_url = 'https://music.163.com/artist?id=%d'
 headers = {
