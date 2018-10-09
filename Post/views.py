@@ -8,6 +8,8 @@ from rest_framework.parsers import JSONParser
 from Post.models import Record,Hot_50
 from Post.serializers import RecordSerializer, HotSerializer
 from rest_framework import generics
+import json
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -26,6 +28,10 @@ def index(request):
 
 def hot(request):
     return render(request=request,template_name='Post/hot.html')
+
+def search(request):
+    resp = {'errorcode': 100, 'detail': request.GET.get("key_word", None)};
+    return HttpResponse(json.dumps(resp), content_type="application/json")
 
 class RecordList(generics.ListAPIView):
     queryset = Record.objects.all()
@@ -50,7 +56,6 @@ class HotList(generics.ListAPIView):
         if singer_name is not None:
             return Hot_50.objects.filter(singer_name__icontains=singer_name).order_by('-comment_total')
         return self.queryset
-
 
 class HotDetail(generics.RetrieveAPIView):
     queryset = Hot_50.objects.all()
