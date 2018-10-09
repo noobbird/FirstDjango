@@ -39,7 +39,7 @@ def get_postData(first_param):
     }
 
 if __name__ == "__main__":
-    param = '{"rid":"R_SO_4_405343230","offset":"0","total":"true","limit":"100","csrf_token":""}'
+    param = '{"rid":"sfasf","offset":"0","total":"true","limit":"100","csrf_token":""}'
     pair = get_postData(param)
     #print(urllib.urlencode(pair))
 
