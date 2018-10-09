@@ -2,7 +2,7 @@
 # Date: 2018/10/6
 import requests
 import re
-import db
+from Post import db
 import json
 import crypt
 from lxml import etree
@@ -32,12 +32,12 @@ def get_albums(singer_id=5781):
 	response = requests.get(url, headers=headers)
 	res = path_filter(response.text, path) 
 	singer_name = path_filter(response.text, singer_name_path)[0].text
-	print u'歌手: ' + singer_name
+	#print u'歌手: ' + singer_name
 	album_dict = {}
 	for e in res:
 	    name = e.text
 	    value = e.get('href').split('=')[-1]
-	    print name, e.get('href'),value#name = e.text
+	    #print name, e.get('href'),value#name = e.text
 	    album_dict[name] = value
 	return album_dict
 
@@ -79,7 +79,7 @@ def search(key_word):
 	data = crypt.get_postData(params%key_word)
 	headers["Content-Type"]= "application/x-www-form-urlencoded"
 	r = requests.post(url, data = data, headers = headers)
-	print r.text
+	return r.text
 
 def update(singer_id):
 	md = get_hot()
@@ -89,12 +89,12 @@ def update(singer_id):
 			db.insert((m['song_name'],m['singer_name'],m['album_name'],total,total,m['song_id'],m['commentThreadId'],m['duration'],m['album_id'],m['status']))
 		else:
 			db.update((total,m['status'],m['song_id']))
-		print m['song_name'],total
+		#print m['song_name'],total
 
 
 	
 if __name__ == '__main__':
-	print len(get_hot())
+	#print len(get_hot())
 	#comment(cmtid)
 	#get_albums()
 	search("zhou")
