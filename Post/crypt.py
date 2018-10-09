@@ -15,12 +15,14 @@ def get_params( first_param):
     first_key = forth_param
     second_key = 16 * 'a'
     h_encText = AES_encrypt(first_param, first_key, iv)
+    h_encText = h_encText.decode('utf-8')
     h_encText = AES_encrypt(h_encText, second_key, iv)
     return h_encText
 
 def AES_encrypt(text, key, iv):
     pad = 16 - len(text) % 16
-    text = text + pad * chr(pad)
+    print(text)
+    text = text + pad * chr(pad) 
     encryptor = AES.new(key, AES.MODE_CBC, iv)
     encrypt_text = encryptor.encrypt(text)
     encrypt_text = base64.b64encode(encrypt_text)
@@ -39,6 +41,6 @@ def get_postData(first_param):
 if __name__ == "__main__":
     param = '{"rid":"R_SO_4_405343230","offset":"0","total":"true","limit":"100","csrf_token":""}'
     pair = get_postData(param)
-    print urllib.urlencode(pair)
+    #print(urllib.urlencode(pair))
 
     
