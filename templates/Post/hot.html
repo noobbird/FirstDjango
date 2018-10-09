@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery-3.3.1.js"></script>
-    <script src="/static/js/core.js"></script>
-
-    <title>Title</title>
+    <title>热门歌曲</title>
     <style>
         th,td{text-align: center}
     </style>
@@ -19,7 +17,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="input-group">
-                <input id="box" type="text" class="form-control" placeholder="请输入歌名">
+                <input id="box" type="text" class="form-control" placeholder="请输入歌手名">
                 <span class="input-group-btn">
                     <button id="su" class="btn btn-primary">搜索</button>
                 </span>
@@ -73,7 +71,7 @@
                 $.each(data, function (i, item) {
                     var row = "<tr>"+
                             "<td>" + (i+1) +"<td>"+
-                            "<td>" + item.song_name +"<td>"+
+                            "<td>"  +"<a href=https://music.163.com/#/song?id="+ item.song_id+">" + item.song_name+ "<a>"+"<td>"+
                             "<td>" + item.singer_name +"<td>"+
                             "<td>" + item.comment_total +"<td>"+
                             "<td>" + item.last_comment_total +"<td>"+
