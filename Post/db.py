@@ -13,8 +13,7 @@ def select(song_id):
 	try:
 		cursor.execute(sql,(song_id,))
 		return len(cursor.fetchall())
-	except Exception,e:
-		print e
+	except Exception:
 		db.rollback()
 	
 
@@ -27,8 +26,7 @@ def update(params):
 	try:
 		cursor.execute(update_sql,params)
 		db.commit()
-	except Exception,e:
-		print e
+	except Exception:
 		db.rollback()
 
 def insert(params ):
@@ -45,13 +43,12 @@ VALUES ( %s, %s, %s, %s,
 	try:
 	    r = cursor.execute(insert_sql,params)
 	    db.commit()
-	except Exception,e:
-	    print e
+	except Exception:
 	    db.rollback()
 
 if __name__ == "__main__":
 	now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-	print now
-	print select(12111)	
+	# print now
+	# print select(12111)
 	#insert(('sun','jay','fantasy',100,121, 10086,'SO_4_31',12121,121,-1))
 	update(('110010','3',10086))
