@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^api/record/$', views.RecordList.as_view()),
     # url(r'^record/(?P<singer_name>\w+)/$', views.RecordDetail.as_view()),
     url(r'^search/$', views.search),
+    url(r'^update/$', views.update),
     url(r'^hot/$', views.hot, name="hot"),
     url(r'^api/hot/$', views.HotList.as_view()),
 ]

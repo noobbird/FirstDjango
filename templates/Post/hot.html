@@ -4,12 +4,45 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/jquery.autocomplete.js"></script>
     <title>热门歌曲</title>
     <style>
-        th,td{text-align: center}
+        th, td {
+            text-align: center
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #FFF;
+            overflow: auto;
+        }
+
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .autocomplete-selected {
+            background: #F0F0F0;
+        }
+
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+
+        .autocomplete-group strong {
+            display: block;
+            border-bottom: 1px solid #000;
+        }
     </style>
 </head>
-<h1>Hot page</h1>
+<h1>首页</h1>
 <body>
 
 <!--bootstrap：搜索框 -->
@@ -20,46 +53,52 @@
                 <input id="box" type="text" class="form-control" placeholder="请输入歌手名">
                 <span class="input-group-btn">
                     <button id="su" class="btn btn-primary">搜索</button>
+                    <button id="update_btn" class="btn btn-primary">更新记录</button>
                 </span>
             </div>
         </div>
     </div>
+
+</div>
+<div class="autocomplete-suggestions">
+    <div class="autocomplete-group"></div>
+    <div class="autocomplete-suggestion autocomplete-selected"></div>
 </div>
 <div class="panel-body">
-    <table id = "main_table" class="table">
-    <thead>
-    <tr>
-        <th>
-            序号
-        </th>
-        <th >
-            歌名
-        </th>
-        <th >
-           歌手
-        </th>
-        <th >
-            上次评论数
-        </th>
-        <th >
-            评论数
-        <th >
-           专辑
-        </th>
-        <th >
-            更新时间
-        </th>
+    <table id="main_table" class="table">
+        <thead>
+        <tr>
+            <th>
+                序号
+            </th>
+            <th>
+                歌名
+            </th>
+            <th>
+                歌手
+            </th>
+            <th>
+                评论数
+            </th>
+            <th>
+                上次评论数
+            <th>
+                专辑
+            </th>
+            <th>
+                更新时间
+            </th>
 
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 
 <script>
     //页面载入完成添加表格数据
-    $(document).ready(function() {
+    $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "/api/hot",
@@ -69,15 +108,15 @@
             dataType: "json",
             success: function (data) {
                 $.each(data, function (i, item) {
-                    var row = "<tr>"+
-                            "<td>" + (i+1) +"<td>"+
-                            "<td>"  +"<a href=https://music.163.com/#/song?id="+ item.song_id+">" + item.song_name+ "<a>"+"<td>"+
-                            "<td>" + item.singer_name +"<td>"+
-                            "<td>" + item.comment_total +"<td>"+
-                            "<td>" + item.last_comment_total +"<td>"+
-                            "<td>" + item.album_name +"<td>"+
-                            "<td>" + item.update_time +"<td>"+
-                            "<tr>"
+                    var row = "<tr>" +
+                        "<td>" + (i + 1) + "</td>" +
+                        "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + ">" + item.song_name + "<a>" + "</td>" +
+                        "<td>" + item.singer_name + "</td>" +
+                        "<td>" + item.comment_total + "</td>" +
+                        "<td>" + item.last_comment_total + "</td>" +
+                        "<td>" + item.album_name + "</td>" +
+                        "<td>" + item.update_time + "</td>" +
+                        "</tr>"
 
                     $("#main_table tbody").append(row);
                 })
@@ -85,22 +124,67 @@
             }
 
         })
-    })
+    });
 
-    $("#box").keyup(function(){
+    $('#box').bind('keypress', function (event) {
+        if (event.keyCode == "13") {
+            $("#su").click();
+        }
+    });
 
-               $.ajax({
+    $('#su').click(function () {
+        $.ajax({
             type: "GET",
-            url: "/search/",
+            url: "/api/hot",
             data: {
-                key_word: $("#box").val(),
+                singer_name: $("#box").val(),
             },
             dataType: "json",
             success: function (data) {
-                       console.log($.parseJSON(data)) ;
+                if (data.length == 0)
+                    alert("没有记录！");
+                $("#main_table tbody").html("");
+                $.each(data, function (i, item) {
+                    var row = "<tr>" +
+                        "<td>" + (i + 1) + "</td>" +
+                        "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + ">" + item.song_name + "<a>" + "</td>" +
+                        "<td>" + item.singer_name + "</td>" +
+                        "<td>" + item.comment_total + "</td>" +
+                        "<td>" + item.last_comment_total + "</td>" +
+                        "<td>" + item.album_name + "</td>" +
+                        "<td>" + item.update_time + "</td>" +
+                        "</tr>"
+
+                    $("#main_table tbody").append(row);
+                })
             }
 
+
         })
+    });
+        $('#update_btn').click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/update",
+            data: {
+                singer_name: $("#box").val(),
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
+
+
+        })
+    });
+
+
+    $("#box").autocomplete({
+        serviceUrl: '/search/',
+        dataType: "json",
+        onSelect: function (suggestion) {
+            {#console.log($.parseJSON(data));#}
+        }
     });
 
 </script>

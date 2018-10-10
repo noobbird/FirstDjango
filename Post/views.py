@@ -30,8 +30,21 @@ def index(request):
 def hot(request):
     return render(request=request,template_name='Post/hot.html')
 
+def update(request):
+    singer_name = request.GET.get("singer_name", None)
+    code = utils.update_by_name(singer_name)
+    resp = {"success":code}
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
 def search(request):
-    resp = utils.search(request.GET.get("key_word", None))
+    resp = {"suggestions":[]}
+    r = utils.search(request.GET.get("query", None))
+    res_json = json.loads(r)
+    try:
+        for i in range(len(res_json["result"]["artists"])):
+            resp["suggestions"].append(res_json["result"]["artists"][i]["name"])
+    except KeyError:
+        print("Search No artists")
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 class RecordList(generics.ListAPIView):
