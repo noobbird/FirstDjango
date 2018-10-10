@@ -97,6 +97,6 @@ if __name__ == '__main__':
 	#print len(get_hot())
 	#comment(cmtid)
 	#get_albums()
-	search("周杰伦")
+	print(search("周杰伦"))
 	
 
