@@ -79,7 +79,6 @@ def search(key_word):
 	data = crypt.get_postData(params%key_word)
 	headers["Content-Type"]= "application/x-www-form-urlencoded"
 	r = requests.post(url, data = data, headers = headers)
-	print(r.text)
 	return r.text
 
 def update(singer_id):
@@ -98,6 +97,6 @@ if __name__ == '__main__':
 	#print len(get_hot())
 	#comment(cmtid)
 	#get_albums()
-	search("zhou")
+	search("周杰伦")
 	
 
