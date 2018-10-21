@@ -110,7 +110,7 @@ def update_by_name(singer_name):
     r_json = json.loads(r)
     try:
         artists = r_json["result"]["artists"]
-        if len(artists) == 1:
+        if True:
             update(artists[0]["id"])
             return 0
         else:
