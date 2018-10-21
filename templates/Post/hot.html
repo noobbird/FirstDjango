@@ -40,6 +40,9 @@
             display: block;
             border-bottom: 1px solid #000;
         }
+        .sortable{
+            cursor: pointer;
+        }
     </style>
 </head>
 <h1>首页</h1>
@@ -68,25 +71,32 @@
     <table id="main_table" class="table">
         <thead>
         <tr>
-            <th>
+            <th class = "column-0 sortable">
                 序号
             </th>
-            <th>
+            <th class = "column-1">
                 歌名
             </th>
-            <th>
+            <th class = "column-2 ">
                 歌手
-            </th>
-            <th>
+            </th >
+            <th class = "column-3 sortable">
                 评论数
             </th>
-            <th>
+            <th class = "column-4 sortable">
                 上次评论数
-            <th>
+            </th>
+            <th class = "column-5 sortable">
+                变化
+            </th>
+            <th class = "column-6">
                 专辑
             </th>
-            <th>
-                更新时间
+            <th class = "column-7">
+                上次更新时间
+            </th>
+            <th class = "column-8">
+                最近更新时间
             </th>
 
         </tr>
@@ -108,14 +118,17 @@
             dataType: "json",
             success: function (data) {
                 $.each(data, function (i, item) {
+                    var total_diff = parseInt(item.comment_total) - parseInt(item.last_comment_total);
                     var row = "<tr>" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + ">" + item.song_name + "<a>" + "</td>" +
+                        "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + " target=\"_blank\">" + item.song_name + "<a>" + "</td>" +
                         "<td>" + item.singer_name + "</td>" +
                         "<td>" + item.comment_total + "</td>" +
                         "<td>" + item.last_comment_total + "</td>" +
+                        "<td>" +  total_diff + "</td>" +
                         "<td>" + item.album_name + "</td>" +
                         "<td>" + item.update_time + "</td>" +
+                        "<td>" + item.last_update_time + "</td>" +
                         "</tr>"
 
                     $("#main_table tbody").append(row);
@@ -145,14 +158,17 @@
                     alert("没有记录！");
                 $("#main_table tbody").html("");
                 $.each(data, function (i, item) {
+                    var total_diff = parseInt(item.comment_total) - parseInt(item.last_comment_total);
                     var row = "<tr>" +
                         "<td>" + (i + 1) + "</td>" +
-                        "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + ">" + item.song_name + "<a>" + "</td>" +
+                     "<td>" + "<a href=https://music.163.com/#/song?id=" + item.song_id + " target=\"_blank\">" + item.song_name + "<a>" + "</td>" +
                         "<td>" + item.singer_name + "</td>" +
                         "<td>" + item.comment_total + "</td>" +
                         "<td>" + item.last_comment_total + "</td>" +
+                        "<td>" +  total_diff + "</td>" +
                         "<td>" + item.album_name + "</td>" +
-                        "<td>" + item.update_time + "</td>" +
+                        "<td>" + item.update_time.replace(/T/g,' ').replace(/Z/g,'')  + "</td>" +
+                        "<td>" + item.last_update_time + "</td>" +
                         "</tr>"
 
                     $("#main_table tbody").append(row);
@@ -186,6 +202,66 @@
             {#console.log($.parseJSON(data));#}
         }
     });
+
+      function swapRow(i, k)
+
+    {
+
+        var tb = $("#main_table").find("tr");
+
+        $(tb).eq(k).insertBefore($(tb).eq(i));
+
+        $(tb).eq(i).insertAfter($(tb).eq(k));
+
+    }
+
+    function SortTb(col, order)
+
+    {
+
+        var tb = $("#main_table").find("tr");
+
+        var total = tb.length;
+
+        //外层循环，共要进行arr.length次求最大值操作
+
+        for (var i = 0; i < total - 1; i++)
+
+        {
+
+            //内层循环，找到第i大的元素，并将其和第i个元素交换
+
+            for (var j = i; j < total - 1; j++)
+
+            {
+
+                var v = parseInt($(tb).eq(i).find("td").eq(col).text());
+
+                var v2 = parseInt($(tb).eq(j).find("td").eq(col).text());
+
+                if (v < v2)
+
+                {
+
+                    //交换两个元素的位置
+
+                    swapRow(i, j);
+
+                    tb = $("#main_table").find("tr");
+
+                }
+
+            }
+
+        }
+         return;
+
+    };
+
+    $(".sortable").click(function () {
+        var cid = this.classList[0].split("-")[1];
+        SortTb(cid);
+    })
 
 </script>
 </body>
