@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Activity</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+    html {
+        background: #1C242D;
+        color: white;
+        font-size: 14px;
+        font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .year-chart {
+        /* overflow: hidden; */
+        /* overflow-x: auto; */
+        white-space: nowrap;
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 50px;
+        margin-bottom: 10px;
+    }
+
+    .year-chart .col {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    .year-chart .labels div {
+        color: rgba(255, 255, 255, 0.6);
+        height: 15px;
+        margin: 2px 4px 2px 2px;
+        padding: 0 0 0 6px;
+        text-align: right;
+        font-size: 11px;
+    }
+
+    .year-chart .month {
+        color: rgba(255, 255, 255, 0.6);
+        position: absolute;
+        top: 4px;
+        margin-left: 4px;
+        font-size: 11px;
+    }
+
+    .year-chart .day {
+        height: 15px;
+        width: 15px;
+        margin: 2px 0 2px 2px;
+        background: rgba(10, 10, 10, 0.2);
+    }
+
+    .year-chart-tooltip {
+        display: none;
+        position: absolute;
+        border: #1b6d85;
+        background: #1C242D;
+        font-size: 20%;
+        z-index: 1000;
+    }
+
+    .year-chart .day .inner {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        text-align: center;
+    }
+
+    .player-activity i {
+        cursor: default;
+    }
+
+    .year-chart {
+        overflow: hidden;
+        overflow-x: auto;
+        white-space: nowrap;
+        position: relative;
+        padding-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .fa-circle::before {
+        content: "\25CF";
+    }
+    </style>
+</head>
+
+<body>
+    <div class="year-chart">
+        <div class="col labels">
+            <div>
+                星期日
+            </div>
+            <div>
+                星期一
+            </div>
+            <div>
+                星期二
+            </div>
+            <div>
+                星期三
+            </div>
+            <div>
+                星期四
+            </div>
+            <div>
+                星期五
+            </div>
+            <div>
+                星期六
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <script type="text/javascript">
+        String.prototype.format=function()
+{
+  if(arguments.length==0) return this;
+  for(var s=this, i=0; i<arguments.length; i++)
+    s=s.replace(new RegExp("\\{"+i+"\\}","g"), arguments[i]);
+  return s;
+};
+        function render(activityDict) {
+        var start = "2018-01-01";
+        var date = new Date(start);
+        var temp = "<div class='col'>";
+        var month = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
+        var box = '<div class="day" rel="neighbour-tooltip" data-hasqtip="372"><div class="inner matches-3" style="color: rgb(87,153,0); font-size: {0}%;" ><i class="fa fa-circle"></i></div></div>';
+        var tip = '<div class="year-chart-tooltip"> <h3>{0}</h3>Record: <span style="color: #A9CF54">{1}</span> </div>';
+        var prem = 0;
+        for (var i = 0; i < 365; i++) {
+
+            var m = date.getMonth() + 1;
+            var y = date.getFullYear();
+            var d = date.getDate();
+            if(d < 10)
+                d = "0" + d;
+            var mm = y + "-" + m + "-" + d;
+            var size = 0;
+            if (activityDict.hasOwnProperty(mm)) {
+                console.log(mm);
+                console.log(activityDict[mm]);
+                size = activityDict[mm] * 2;
+            }
+            var week = date.getDay();
+            var tipInfo = tip.format(mm, size == 0?size:activityDict[mm]);
+            //换列
+            if (week == 6) {
+                temp += box.format(size) + tipInfo+  "</div>";
+                $(".year-chart").append(temp);
+                temp = "<div class='col'>";
+
+            } else
+                temp += box.format(size) + tipInfo;
+            //如果换月
+            if (prem != m) {
+                temp += '<div class="month">' + month[m - 1] + '</div>';
+                prem++;
+            }
+            date.setDate(date.getDate() + 1);
+
+        }
+}
+
+
+    var activityDict = new Array();
+      $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/api/activity",
+            dataType: "json",
+            async:true,
+            success: function (data) {
+                 $.each(data, function (i, item) {
+                     activityDict[item['day']] = item['available'];
+                }
+
+                )
+                render(activityDict);
+                $(".day").hover(function (event) {
+                    console.log( $(this).next());
+                    $(this).next().show();
+                }, function() {
+            $(this).next('.year-chart-tooltip').hide();
+        })
+            }
+
+        })
+    });
+
+    </script>
+</body>
+
+</html>

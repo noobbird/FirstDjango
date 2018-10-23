@@ -6,15 +6,18 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from Post.models import Record,Hot_50
-from Post.serializers import RecordSerializer, HotSerializer
+from Post.serializers import RecordSerializer, HotSerializer, ActivitySerializer
 from rest_framework import generics
 from Post import utils
 import json
 from django.http import HttpResponse
+from django.db.models import Count
+from django.core import serializers
 
 # Create your views here.
 
 def index(request):
+
 
     records = Record.objects.all().order_by('-listen_time')
     limit =3
@@ -35,6 +38,9 @@ def update(request):
     code = utils.update_by_name(singer_name)
     resp = {"success":code}
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+def activity(request):
+    return render(request=request, template_name='Post/mock.html')
 
 def search(request):
     resp = {"suggestions":[]}
@@ -75,3 +81,8 @@ class HotDetail(generics.RetrieveAPIView):
     queryset = Hot_50.objects.all()
     serializer_class = HotSerializer
     lookup_field = 'song_id'
+
+class LisentFrequence(generics.ListAPIView):
+    queryset = Record.objects.extra(select={'day': "TO_CHAR(listen_time, 'YYYY-MM-DD')"}).values('day').annotate(
+        available=Count('listen_time'))
+    serializer_class = ActivitySerializer
