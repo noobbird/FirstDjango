@@ -8,8 +8,11 @@ urlpatterns = [
     # url(r'^record/(?P<singer_name>\w+)/$', views.RecordDetail.as_view()),
     url(r'^search/$', views.search),
     url(r'^update/$', views.update),
+    url(r'^api/activity/$', views.LisentFrequence.as_view()),
     url(r'^hot/$', views.hot, name="hot"),
     url(r'^api/hot/$', views.HotList.as_view()),
+    url(r'^activity/$', views.activity, name="hot"),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

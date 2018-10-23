@@ -11,3 +11,8 @@ class HotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hot_50
         fields= '__all__'
+
+
+class ActivitySerializer(serializers.Serializer):
+    day = serializers.DateField();
+    available =serializers.IntegerField();
