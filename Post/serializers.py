@@ -16,3 +16,8 @@ class HotSerializer(serializers.ModelSerializer):
 class ActivitySerializer(serializers.Serializer):
     day = serializers.DateField();
     available =serializers.IntegerField();
+
+
+class HourSerializer(serializers.Serializer):
+    hour = serializers.IntegerField();
+    available =serializers.IntegerField();
