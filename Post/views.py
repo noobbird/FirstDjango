@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from Post.models import Record,Hot_50
-from Post.serializers import RecordSerializer, HotSerializer, ActivitySerializer
+from Post.serializers import RecordSerializer, HotSerializer, ActivitySerializer, HourSerializer
 from rest_framework import generics
 from Post import utils
 import json
@@ -86,3 +86,8 @@ class LisentFrequence(generics.ListAPIView):
     queryset = Record.objects.extra(select={'day': "TO_CHAR(listen_time, 'YYYY-MM-DD')"}).values('day').annotate(
         available=Count('listen_time'))
     serializer_class = ActivitySerializer
+
+class HourFrequence(generics.ListAPIView):
+    queryset = Record.objects.extra(select={'hour': "TO_CHAR(listen_time, 'HH24')"}).values('hour').annotate(
+        available=Count('listen_time'))
+    serializer_class = HourSerializer
