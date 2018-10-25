@@ -1,0 +1,157 @@
+        html {
+            background: #1C242D;
+            color: white;
+            font-size: 14px;
+            font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .year-chart {
+            /* overflow: hidden; */
+            /* overflow-x: auto; */
+            width: 1000px;
+            white-space: nowrap;
+            position: relative;
+            padding-top: 20px;
+            padding-bottom: 50px;
+            margin-bottom: 10px;
+        }
+
+        .year-chart .col {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        .year-chart .labels div {
+            color: rgba(255, 255, 255, 0.6);
+            height: 15px;
+            margin: 2px 4px 2px 2px;
+            padding: 0 0 0 6px;
+            text-align: right;
+            font-size: 11px;
+        }
+
+        .year-chart .month {
+            color: rgba(255, 255, 255, 0.6);
+            position: absolute;
+            top: 4px;
+            margin-left: 4px;
+            font-size: 11px;
+        }
+
+        .year-chart .day {
+            height: 15px;
+            width: 15px;
+            margin: 2px 0 2px 2px;
+            background: rgba(10, 10, 10, 0.2);
+        }
+
+        .year-chart-tooltip {
+            display: none;
+            position: absolute;
+            border: #1b6d85;
+            background: #1C242D;
+            font-size: 20%;
+            z-index: 1000;
+        }
+
+        .year-chart .day .inner {
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            text-align: center;
+        }
+
+        .player-activity i {
+            cursor: default;
+        }
+
+        .year-chart {
+            overflow: hidden;
+            overflow-x: auto;
+            white-space: nowrap;
+            position: relative;
+            padding-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .fa-circle::before {
+            content: "\25CF";
+        }
+
+        .container {
+            margin: auto;
+            position: relative;
+            max-width: 972px;
+        }
+
+        .header-content {
+            padding: 20px;
+            display: -webkit-box;
+        }
+
+        .block {
+            margin: 20px;
+        }
+
+        .player-activity {
+            height: 250px;
+            position: relative;
+        }
+
+        .count-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .week-column rect:hover {
+            fill: rgb(140, 130, 25);
+        }
+
+        .data-column rect:hover {
+            fill: rgb(140, 130, 25);
+        }
+
+        .base-container {
+            margin: auto;
+            max-width: 1000px;
+        }
+
+        article {
+            box-shadow: 0 0 3px rgba(10, 10, 10, 0.4);
+            border: 1px solid #242F39;
+            border-radius: 1px;
+            background: #242F39;
+            padding: 4px;
+            clear: right;
+        }
+
+        header {
+            font-size: 16px;
+            color: white;
+            position: relative;
+            padding: 6px 4px;
+            text-shadow: 1px 1px 2px black;
+            text-transform: uppercase;
+            font-weight: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }

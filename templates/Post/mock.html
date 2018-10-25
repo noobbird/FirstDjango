@@ -5,194 +5,83 @@
     <title>Activity</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <style type="text/css">
-        html {
-            background: #1C242D;
-            color: white;
-            font-size: 14px;
-            font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    <link rel="stylesheet" media="all" href="/static/css/activity.css">
 
-        .year-chart {
-            /* overflow: hidden; */
-            /* overflow-x: auto; */
-            white-space: nowrap;
-            position: relative;
-            padding-top: 20px;
-            padding-bottom: 50px;
-            margin-bottom: 10px;
-        }
-
-        .year-chart .col {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        body {
-            line-height: 1;
-        }
-
-        .year-chart .labels div {
-            color: rgba(255, 255, 255, 0.6);
-            height: 15px;
-            margin: 2px 4px 2px 2px;
-            padding: 0 0 0 6px;
-            text-align: right;
-            font-size: 11px;
-        }
-
-        .year-chart .month {
-            color: rgba(255, 255, 255, 0.6);
-            position: absolute;
-            top: 4px;
-            margin-left: 4px;
-            font-size: 11px;
-        }
-
-        .year-chart .day {
-            height: 15px;
-            width: 15px;
-            margin: 2px 0 2px 2px;
-            background: rgba(10, 10, 10, 0.2);
-        }
-
-        .year-chart-tooltip {
-            display: none;
-            position: absolute;
-            border: #1b6d85;
-            background: #1C242D;
-            font-size: 20%;
-            z-index: 1000;
-        }
-
-        .year-chart .day .inner {
-            position: relative;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            text-align: center;
-        }
-
-        .player-activity i {
-            cursor: default;
-        }
-
-        .year-chart {
-            overflow: hidden;
-            overflow-x: auto;
-            white-space: nowrap;
-            position: relative;
-            padding-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        .fa {
-            display: inline-block;
-            font: normal normal normal 14px/1 FontAwesome;
-            font-size: inherit;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .fa-circle::before {
-            content: "\25CF";
-        }
-
-        .container {
-            margin: auto;
-            position: relative;
-            max-width: 972px;
-        }
-
-        .header-content {
-            padding: 20px;
-            display: -webkit-box;
-        }
-
-        .block {
-            margin: 20px;
-        }
-        .player-activity{
-            height: 300px;
-            position: relative;
-        }
-        .count-label{
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-
-    </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="base-container">
+    <div class="container">
 
-    <div class="header-content">
-        <div class="profile-content block">
-            <div><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/6e/6e208699b2cf9433a30a8865a8f70d22cd214fa9_full.jpg" style="width: 50px;height:50px"></div>
-            <div>牛肉丸</div>
+        <div class="header-content">
+            <div class="profile-content block">
+                <div><img
+                        src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/6e/6e208699b2cf9433a30a8865a8f70d22cd214fa9_full.jpg"
+                        style="width: 50px;height:50px"></div>
+                <div>牛肉丸</div>
+            </div>
+            <div class="statics block">
+                <div class="total">1995首</div>
+                <div class="">3 小时前</div>
+                <div><a href="/">首页</a></div>
+            </div>
         </div>
-        <div class="statics block">
-            <div class="total">1995首</div>
-            <div class="">3 小时前</div>
-        </div>
-    </div>
-    <header>Activity by Calendar Day</header>
+        <header>日活图</header>
+        <article>
+            <div class="year-chart">
+                <div class="col labels">
+                    <div>
+                        星期日
+                    </div>
+                    <div>
+                        星期一
+                    </div>
+                    <div>
+                        星期二
+                    </div>
+                    <div>
+                        星期三
+                    </div>
+                    <div>
+                        星期四
+                    </div>
+                    <div>
+                        星期五
+                    </div>
+                    <div>
+                        星期六
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </article>
 
-    <div class="year-chart">
-        <div class="col labels">
-            <div>
-                星期日
-            </div>
-            <div>
-                星期一
-            </div>
-            <div>
-                星期二
-            </div>
-            <div>
-                星期三
-            </div>
-            <div>
-                星期四
-            </div>
-            <div>
-                星期五
-            </div>
-            <div>
-                星期六
-            </div>
-        </div>
-        <div class="col"></div>
-    </div>
-    <header>Activity by hour of Day</header>
-<article class="player-activity">
-    <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    	<rect x="0" y="0" width="923" height="250" strokeWidth="0" fill="transparent" class=" highcharts-background"></rect>
-    <g class="data-column" style="fill:rgb(122, 118, 0)"></g>
-    <g class="data-label" ></g>
-    <div class="count-label"></div>
-    </svg>
-</article>
+        <header>时活图</header>
+        <article class="player-activity">
+            <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="923" height="250" strokeWidth="0" fill="transparent"
+                      class=" highcharts-background"></rect>
+                <g class="data-column" style="fill:rgb(122, 118, 0)"></g>
+                <g class="data-label"></g>
+                <div class="count-label"></div>
+            </svg>
+        </article>
         <div class="hour-chart">
 
-    </div>
-    <header>ACTIVITY BY DAY OF WEEK</header>
+        </div>
+        <header>周活图</header>
         <article class="player-activity">
-    <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    	<rect x="0" y="0" width="923" height="250" strokeWidth="0" fill="transparent" class=" highchart-background"></rect>
-    <g class="week-column"></g>
-        <g class="week-label"></g>
-    <div class="week-count"></div>
-    </svg>
-</article>
+            <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="923" height="250" strokeWidth="0" fill="transparent"
+                      class=" highchart-background"></rect>
+                <g class="week-column"></g>
+                <g class="week-label"></g>
+                <div class="week-count"></div>
+            </svg>
+        </article>
 
+    </div>
 </div>
 
 
@@ -209,10 +98,15 @@
         var date = new Date(start);
         var temp = "<div class='col'>";
         var month = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-        var box = '<div class="day" rel="neighbour-tooltip" data-hasqtip="372"><div class="inner matches-3" style="color: rgb(87,153,0); font-size: {0}%;" ><i class="fa fa-circle"></i></div></div>';
+        var box = '<div class="day" rel="neighbour-tooltip" data-hasqtip="372"><div class="inner matches-3" style="color: rgb(10,230,0); font-size: {0}%;" ><i class="fa fa-circle"></i></div></div>';
         var tip = '<div class="year-chart-tooltip"> <h3>{0}</h3>Record: <span style="color: #A9CF54">{1}</span> </div>';
         var prem = 0;
-        for (var i = 0; i < 365; i++) {
+        var w = date.getDay();
+        //填充年初前几天
+        for (var i = 0; i < w; i++) {
+            temp += box.format(0);
+        }
+        for (var i = 0; i < 366; i++) {
 
             var m = date.getMonth() + 1;
             var y = date.getFullYear();
@@ -226,7 +120,8 @@
                 console.log(mm);
                 console.log(activityDict[mm]);
                 size = activityDict[mm] * 2;
-                if(weekActivity.hasOwnProperty(w)){
+                {#size= (size<120?120:size);#}
+                if (weekActivity.hasOwnProperty(w)) {
                     weekActivity[w] += activityDict[mm];
                 }
                 else
@@ -235,7 +130,7 @@
             var week = date.getDay();
             var tipInfo = tip.format(mm, size == 0 ? size : activityDict[mm]);
             //换列
-            if (week == 6) {
+            if (week == 6 || (m == 12 && d == "31")) {
                 temp += box.format(size) + tipInfo + "</div>";
                 $(".year-chart").append(temp);
                 temp = "<div class='col'>";
@@ -252,80 +147,80 @@
         }
     }
 
-    function renderHour(hourActivity){
-            var rect = '<rect x={0} y={1} width={2} height={3} fill="rgb(122,118,0)" rx="0" ry="0"></rect>';
-            var label = '<text x={0} y={1} style="color:#525252;cursor:default;font-size:11px;fill:#525252;width:120px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)"  opacity="1">{2}</text>';
-            var countLabel = '<div class="null" style="position: absolute; left: {0}px; top: {1}px;">{2}</div>'
-            var containerLength= $('.player-activity').width();
-            var piece = containerLength/30;
-            var width = piece;
-            var margin = piece*6/25;
-            var startx = margin;
-            var starty = 60;
-            var maxHeight = 180;
-            var maxCount = 90;
-            var count  = 0;
-            var col = "";
-            var svglabel = "";
-            for(var i = 0; i< 24;i ++){
-                if (hourActivity.hasOwnProperty(i)) {
-                    count = hourActivity[i];
-                }
-                else
-                    count = 0.5;
-                var height = count * 16/9;
-                var tmpy = maxHeight - height
-                col += rect.format(startx,tmpy,width, height);
-                {#$(".data-column").append(rect.format(startx,tmpy,width, height));#}
-                svglabel += label.format(startx+width/2,maxHeight+20, i);
-                {#$(".data-label").append(label.format(startx+width/2,maxHeight+20, i));#}
-                $(".count-label").append(countLabel.format(startx+width/2-5, tmpy - 15, count==0.5?"":hourActivity[i]));
+    function renderHour(hourActivity) {
+        var rect = '<rect x={0} y={1} width={2} height={3} fill="rgb(122,118,0)" rx="0" ry="0"></rect>';
+        var label = '<text x={0} y={1} style="color:#525252;cursor:default;font-size:11px;fill:#525252;width:120px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)"  opacity="1">{2}</text>';
+        var countLabel = '<div class="null" style="position: absolute; left: {0}px; top: {1}px;">{2}</div>'
+        var containerLength = $('.player-activity').width();
+        var piece = containerLength / 30;
+        var width = piece;
+        var margin = piece * 6 / 25;
+        var startx = margin;
+        var starty = 60;
+        var maxHeight = 220;
+        var maxCount = 90;
+        var count = 0;
+        var col = "";
+        var svglabel = "";
+        for (var i = 0; i < 24; i++) {
+            if (hourActivity.hasOwnProperty(i)) {
+                count = hourActivity[i];
+            }
+            else
+                count = 0.5;
+            var height = count * 16 / 9;
+            var tmpy = maxHeight - height
+            col += rect.format(startx, tmpy, width, height);
+            {#$(".data-column").append(rect.format(startx,tmpy,width, height));#}
+            svglabel += label.format(startx + width / 2, maxHeight + 20, i + "时");
+            {#$(".data-label").append(label.format(startx+width/2,maxHeight+20, i));#}
+            $(".count-label").append(countLabel.format(startx + width / 2 - 5, tmpy - 15, count == 0.5 ? "" : hourActivity[i]));
 
             // $("svg").append(rect);
             startx += margin + width;
-            }
-             {#$("svg").html($("svg").html());#}
-            $(".data-label").html(svglabel);
-            $(".data-column").html(col);
+        }
+        {#$("svg").html($("svg").html());#}
+        $(".data-label").html(svglabel);
+        $(".data-column").html(col);
     }
 
 
-        function renderWeek(weekActivity){
-            var rect = '<rect x={0} y={1} width={2} height={3} fill="rgb(122,118,0)" rx="0" ry="0"></rect>';
-            var label = '<text x={0} y={1} style="color:#525252;cursor:default;font-size:11px;fill:#525252;width:120px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)"  opacity="1">{2}</text>';
-            var countLabel = '<div class="null" style="position: absolute; left: {0}px; top: {1}px;">{2}</div>'
-            var containerLength= $('.player-activity').width();
-            var piece = containerLength/10;
-            var width = piece;
-            var margin = piece*3/8;
-            var startx = margin;
-            var starty = 60;
-            var maxHeight = 180;
-            var maxCount = 90;
-            var count  = 0;
-            var dayDict = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日",]
-            var hist = "";
-            var svglabel = "";
-            for(var i = 0; i< 7;i ++){
-                if (weekActivity.hasOwnProperty(i)) {
-                    count = weekActivity[i];
-                }
-                else
-                    count = 0.5;
-                var height = count * 180/150;
-                var tmpy = maxHeight - height
-                hist += rect.format(startx,tmpy,width, height);
-                {#$(".week-column").append(rect.format(startx,tmpy,width, height));#}
-                svglabel += label.format(startx+width/2,maxHeight+20, dayDict[i]);
-                {#$(".week-label").append(label.format(startx+width/2,maxHeight+20, dayDict[i]));#}
-                $(".week-count").append(countLabel.format(startx+width/2-5, tmpy - 15, count==0.5?"":weekActivity[i]));
+    function renderWeek(weekActivity) {
+        var rect = '<rect x={0} y={1} width={2} height={3} fill="rgb(122,118,0)" rx="0" ry="0"></rect>';
+        var label = '<text x={0} y={1} style="color:#525252;cursor:default;font-size:11px;fill:#525252;width:120px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)"  opacity="1">{2}</text>';
+        var countLabel = '<div class="null" style="position: absolute; left: {0}px; top: {1}px;">{2}</div>'
+        var containerLength = $('.player-activity').width();
+        var piece = containerLength / 10;
+        var width = piece;
+        var margin = piece * 3 / 8;
+        var startx = margin;
+        var starty = 60;
+        var maxHeight = 220;
+        var maxCount = 90;
+        var count = 0;
+        var dayDict = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日",]
+        var hist = "";
+        var svglabel = "";
+        for (var i = 0; i < 7; i++) {
+            if (weekActivity.hasOwnProperty(i)) {
+                count = weekActivity[i];
+            }
+            else
+                count = 0.5;
+            var height = count * 180 / 150;
+            var tmpy = maxHeight - height
+            hist += rect.format(startx, tmpy, width, height);
+            {#$(".week-column").append(rect.format(startx,tmpy,width, height));#}
+            svglabel += label.format(startx + width / 2, maxHeight + 20, dayDict[i]);
+            {#$(".week-label").append(label.format(startx+width/2,maxHeight+20, dayDict[i]));#}
+            $(".week-count").append(countLabel.format(startx + width / 2 - 5, tmpy - 15, count == 0.5 ? "" : weekActivity[i]));
 
             // $("svg").append(rect);
             startx += margin + width;
-            }
-            $(".week-column").html(hist);
-            $(".week-label").html(svglabel);
-             {#$("svg").html($("svg").html());#}
+        }
+        $(".week-column").html(hist);
+        $(".week-label").html(svglabel);
+        {#$("svg").html($("svg").html());#}
     }
 
     var activityDict = new Array();

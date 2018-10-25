@@ -6,6 +6,7 @@
     <script src="/static/js/jquery-3.3.1.js"></script>
     <script src="/static/js/jquery.autocomplete.js"></script>
     <title>热门歌曲</title>
+
     <style>
         th, td {
             text-align: center
@@ -43,12 +44,17 @@
         .sortable{
             cursor: pointer;
         }
+                .base-container {
+            margin: auto;
+            max-width: 1000px;
+        }
     </style>
 </head>
-<h1>首页</h1>
-<body>
 
-<!--bootstrap：搜索框 -->
+<body>
+<div class="base-container">
+    <h2><a href="/">首页</a></h2>
+    <!--bootstrap：搜索框 -->
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -61,7 +67,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <div class="autocomplete-suggestions">
     <div class="autocomplete-group"></div>
@@ -105,6 +110,8 @@
         </tbody>
     </table>
 </div>
+</div>
+
 
 <script>
     //页面载入完成添加表格数据
@@ -154,8 +161,10 @@
             },
             dataType: "json",
             success: function (data) {
-                if (data.length == 0)
-                    alert("没有记录！");
+                if (data.length == 0){
+                      alert("没有记录！");
+                      return;
+                }
                 $("#main_table tbody").html("");
                 $.each(data, function (i, item) {
                     var total_diff = parseInt(item.comment_total) - parseInt(item.last_comment_total);
@@ -192,6 +201,7 @@
 
 
         })
+        alert("后台正在更新，请稍等");
     });
 
 

@@ -9,6 +9,7 @@ from Post.models import Record,Hot_50
 from Post.serializers import RecordSerializer, HotSerializer, ActivitySerializer, HourSerializer
 from rest_framework import generics
 from Post import utils
+import threading
 import json
 from django.http import HttpResponse
 from django.db.models import Count
@@ -35,8 +36,10 @@ def hot(request):
 
 def update(request):
     singer_name = request.GET.get("singer_name", None)
-    code = utils.update_by_name(singer_name)
-    resp = {"success":code}
+    t1 = threading.Thread(target=utils.update_by_name,  args=(singer_name, ))
+    # code = utils.update_by_name(singer_name)
+    t1.start()
+    resp = {"success":1}
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 def activity(request):
