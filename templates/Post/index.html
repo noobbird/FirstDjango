@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0">
 
     <!-- Site Metas -->
-    <title>Food Funday Restaurant - One page HTML Responsive</title>
+    <title>Secret</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -20,28 +20,21 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <!-- Site CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
-    <!-- Responsive CSS -->
-    <link rel="stylesheet" href="/static/css/responsive.css">
-    <!-- color -->
-    <link id="changeable-colors" rel="stylesheet" href="/static/css/colors/orange.css"/>
+    <style>
+        .base-container {
+            margin: auto;
+            max-width: 1000px;
+        }
+    </style>
 
-    <!-- Modernizer -->
-    <script src="/static/js/modernizer.js"></script>
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-<script src="/static/js/jquery-3.3.1.js"></script>
 </head>
 
 <body>
-
-{% for category in category_list %}
-    <li><a href="#">{{ category.singer_name }}</a></li>
+<div class="base-container">
+  {% for category in category_list %}
+    <li><a href="http://" + {{ category.song_url }}>{{ category.singer_name }}</a></li>
 {% endfor %}
+<h1>听歌记录表</h1>
 <!--bootstrap：搜索框 -->
 <div class="container">
     <div class="row">
@@ -55,20 +48,20 @@
         </div>
     </div>
 </div>
-<h1>听歌记录表</h1>
 <h2><a href="activity">活动图</a></h2>
+<h2><a href="hot">热度</a></h2>
 <div class="panel-body">
-    <table class="table">
+    <table class="table main_table">
     <thead>
     <tr>
         <th>
             <div class="f">序号</div>
         </th>
-        <th>
+        <th >
             <div class="wp af0">歌名</div>
         </th>
         <th class="w2">
-            <div class="wp af1">歌手</div>
+            <div class="wp af1" >歌手</div>
         </th>
         <th class="w3">
             <div class="wp af2">收听者</div>
@@ -116,18 +109,37 @@
     </p>
 </div>
 
+</div>
+<script src="/static/js/jquery-3.3.1.js"></script>
 <script>
 
     $('#su').click(function(){
         $.ajax({
             type:"GET",
-            url:"/record",
+            url:"/api/record/",
             data:{
                 song_name:$("#box").val()
             },
             dataType:"json",
-            success:function(jsonStr){
-                {#alert(jsonStr);#}
+            success:function(data){
+                if (data.length == 0){
+                alert("没有记录！");
+                return;
+                }
+
+                $(".main_table tbody").html("");
+                $.each(data, function (i, item) {
+                    var total_diff = parseInt(item.comment_total) - parseInt(item.last_comment_total);
+                    var row = "<tr>" +
+                        "<td>" + (i + 1) + "</td>" +
+                     "<td>" + "<a href=http://"+item.song_url+" target='_blank'>"+item.song_name +"</a>" +"</td>" +
+                        "<td>" + item.singer_name + "</td>" +
+                        "<td>" + item.listener + "</td>" +
+                        "<td>" + item.listen_time + "</td>" +
+                        "</tr>"
+
+                    $(".main_table tbody").append(row);
+                })
             }
 
 

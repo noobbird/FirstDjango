@@ -92,14 +92,17 @@ def search(key_word):
 
 def update(singer_id):
     md = get_hot(singer_id)
+    cnt = 1
     for m in md:
         total = comment(m['commentThreadId'])['total']
-        print(m['song_name'], total)
+        print(cnt, m['song_name'], total)
+        cnt += 1
         if db.select(m['song_id']) == 0:
             db.insert((m['song_name'], m['singer_name'], m['album_name'], total, total, m['song_id'],
                        m['commentThreadId'], m['duration'], m['album_id'], m['status']))
         else:
             db.update((total, m['status'], m['song_id']))
+    print(singer_id+" update done!")
 
 
 # print m['song_name'],total
