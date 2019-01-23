@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^hot/$', views.hot, name="hot"),
     url(r'^api/hot/$', views.HotList.as_view()),
     url(r'^activity/$', views.activity, name="hot"),
+    url(r'^crawlstatus/$', views.crawlStatus, name="what"),
+    url(r'^startcrawl/$', views.startCrawl, name="tahw")
 
 ]
 

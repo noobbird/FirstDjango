@@ -25,6 +25,14 @@
             margin: auto;
             max-width: 1000px;
         }
+        .crawlstatus{
+        float: right;
+        background: red;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        cursor:pointer;
+        }
     </style>
 
 </head>
@@ -49,6 +57,7 @@
     </div>
 </div>
 <h2><a href="activity">活动图</a></h2>
+<div class="crawlstatus"></div>
 <h2><a href="hot">热度</a></h2>
 <div class="panel-body">
     <table class="table main_table">
@@ -112,7 +121,26 @@
 </div>
 <script src="/static/js/jquery-3.3.1.js"></script>
 <script>
-
+    $(document).ready(function(){
+        $.get("crawlstatus",function(msg){
+            if(msg.status==0){
+                $(".crawlstatus").css("background","green");
+            }
+            else if(msg.status == 2){
+                $(".crawlstatus").css("background","yellow");
+            }
+        })
+    })
+    $('.crawlstatus').click(function () {
+        $.get("startcrawl", function (msg) {
+            if(msg.status == 0){
+                 $(".crawlstatus").css("background","green");
+            }
+            else if(msg.status == 1){
+                $(".crawlstatus").css("background","blue");
+            }
+        })
+    })
     $('#su').click(function(){
         $.ajax({
             type:"GET",

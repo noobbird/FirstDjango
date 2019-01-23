@@ -102,7 +102,7 @@ def update(singer_id):
                        m['commentThreadId'], m['duration'], m['album_id'], m['status']))
         else:
             db.update((total, m['status'], m['song_id']))
-    print(singer_id+" update done!")
+    print(str(singer_id)+" update done!")
 
 
 # print m['song_name'],total
@@ -127,4 +127,4 @@ if __name__ == '__main__':
     # comment(cmtid)
     # get_albums()
     # print(search("周杰伦"))
-    update_by_name("周杰伦")
+    update_by_name("蔡依林")

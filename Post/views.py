@@ -13,6 +13,9 @@ import threading
 import json
 from django.http import HttpResponse
 from django.db.models import Count
+import os
+import platform
+import re
 from django.core import serializers
 
 # Create your views here.
@@ -21,12 +24,12 @@ def index(request):
 
 
     records = Record.objects.all().order_by('-listen_time')
-    limit =3
+    limit =20
     paginator = Paginator(records, limit)
     page = request.GET.get('page', 1)
     result = paginator.page(page)
     context = {
-        "record_list": records,
+        "record_list": result,
         "page": page
     }
     return render(request=request, template_name='Post/index.html', context=context)
@@ -94,3 +97,22 @@ class HourFrequence(generics.ListAPIView):
     queryset = Record.objects.extra(select={'hour': "TO_CHAR(listen_time, 'HH24')"}).values('hour').annotate(
         available=Count('listen_time'))
     serializer_class = HourSerializer
+    
+    
+def crawlStatus(request):
+    resp = {"status": 1}
+    if platform.system() == "Linux":
+        str = os.popen('ps -ef|grep /*.py')
+        status = re.search('week', str.read())
+        if status != None:
+            resp["status"] = 0
+    else:
+        resp["status"] = 2
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+def startCrawl(request):
+    resp = {"status": 1}
+    if platform.system() == "Linux":
+        str = os.popen('nohup python python /root/music/week.py >/tmp/weekerr &')
+        resp["status"] = 0
+    return HttpResponse(json.dumps(resp), content_type="application/json")
