@@ -28,33 +28,7 @@
             </div>
         </div>
         <header>日活图</header>
-        <article>
-            <div class="year-chart">
-                <div class="col labels">
-                    <div>
-                        星期日
-                    </div>
-                    <div>
-                        星期一
-                    </div>
-                    <div>
-                        星期二
-                    </div>
-                    <div>
-                        星期三
-                    </div>
-                    <div>
-                        星期四
-                    </div>
-                    <div>
-                        星期五
-                    </div>
-                    <div>
-                        星期六
-                    </div>
-                </div>
-                <div class="col"></div>
-            </div>
+        <article class="day_article">
         </article>
 
         <header>时活图</header>
@@ -92,16 +66,39 @@
             s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
         return s;
     };
-
-    function render(activityDict, weekActivity) {
+    function fillWeek(activityDict, weekActivity){
         var start = "2018-01-01";
+        var sDate = new Date(start);
+        var tDate = new Date();
+        var days = Math.floor((tDate.getTime() - sDate.getTime())/(24*3600));
+        for(var i = 0; i < days; i++){
+            var m = sDate.getMonth() + 1;
+            var y = sDate.getFullYear();
+            var d = sDate.getDate();
+            var w = sDate.getDay();
+            var mm = y + "-" + m + "-" + d;
+            if (activityDict.hasOwnProperty(mm)) {
+                if (weekActivity.hasOwnProperty(w)) {
+                    weekActivity[w] += activityDict[mm];
+                }
+                else
+                    weekActivity[w] = 1;
+            }
+            sDate.setDate(sDate.getDate() + 1);
+        }
+
+    }
+
+    function render(start, activityDict) {
         var date = new Date(start);
+        var w = date.getDay();
+        var dayAriticle = '<div class="year-chart"><div class="col labels"><div>星期日</div><div>星期一</div>' +
+            '<div>星期二</div><div>星期三</div><div>星期四</div><div>星期五</div><div>星期六</div></div>';
         var temp = "<div class='col'>";
         var month = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
         var box = '<div class="day" rel="neighbour-tooltip" data-hasqtip="372"><div class="inner matches-3" style="color: rgb(10,230,0); font-size: {0}%;" ><i class="fa fa-circle"></i></div></div>';
         var tip = '<div class="year-chart-tooltip"> <h3>{0}</h3>Record: <span style="color: #A9CF54">{1}</span> </div>';
         var prem = 0;
-        var w = date.getDay();
         //填充年初前几天
         for (var i = 0; i < w; i++) {
             temp += box.format(0);
@@ -114,37 +111,34 @@
             var w = date.getDay();
             if (d < 10)
                 d = "0" + d;
+            if(m < 10)
+                m = "0" + m;
             var mm = y + "-" + m + "-" + d;
             var size = 0;
             if (activityDict.hasOwnProperty(mm)) {
                 console.log(mm);
                 console.log(activityDict[mm]);
                 size = activityDict[mm] * 2;
-                {#size= (size<120?120:size);#}
-                if (weekActivity.hasOwnProperty(w)) {
-                    weekActivity[w] += activityDict[mm];
+            }
+                var week = date.getDay();
+                var tipInfo = tip.format(mm, size == 0 ? size : activityDict[mm]);
+                //换列
+                if (week == 6 || (m == 12 && d == "31")) {
+                    temp += box.format(size) + tipInfo + "</div>";
+                    dayAriticle += temp;
+                    temp = "<div class='col'>";
+
+                } else
+                    temp += box.format(size) + tipInfo;
+                //如果换月
+                if (prem != m) {
+                    temp += '<div class="month">' + month[m - 1] + '</div>';
+                    prem++;
                 }
-                else
-                    weekActivity[w] = 1;
+                date.setDate(date.getDate() + 1);
             }
-            var week = date.getDay();
-            var tipInfo = tip.format(mm, size == 0 ? size : activityDict[mm]);
-            //换列
-            if (week == 6 || (m == 12 && d == "31")) {
-                temp += box.format(size) + tipInfo + "</div>";
-                $(".year-chart").append(temp);
-                temp = "<div class='col'>";
-
-            } else
-                temp += box.format(size) + tipInfo;
-            //如果换月
-            if (prem != m) {
-                temp += '<div class="month">' + month[m - 1] + '</div>';
-                prem++;
-            }
-            date.setDate(date.getDate() + 1);
-
-        }
+        dayAriticle += "</div>";
+        $(".day_article").append(dayAriticle);
     }
 
     function renderHour(hourActivity) {
@@ -156,9 +150,8 @@
         var width = piece;
         var margin = piece * 6 / 25;
         var startx = margin;
-        var starty = 60;
-        var maxHeight = 220;
-        var maxCount = 90;
+        var maxHeight = 200;
+        var maxCount = hourActivity.reduce(function(a, b){return Math.max(a, b)});
         var count = 0;
         var col = "";
         var svglabel = "";
@@ -168,7 +161,7 @@
             }
             else
                 count = 0.5;
-            var height = count * 16 / 9;
+            var height = count/maxCount * maxHeight;
             var tmpy = maxHeight - height
             col += rect.format(startx, tmpy, width, height);
             {#$(".data-column").append(rect.format(startx,tmpy,width, height));#}
@@ -195,8 +188,8 @@
         var margin = piece * 3 / 8;
         var startx = margin;
         var starty = 60;
+        var maxCount =  weekActivity.reduce(function(a, b){return Math.max(a, b)});
         var maxHeight = 220;
-        var maxCount = 90;
         var count = 0;
         var dayDict = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日",]
         var hist = "";
@@ -207,7 +200,7 @@
             }
             else
                 count = 0.5;
-            var height = count * 180 / 150;
+            var height = count/maxCount * maxHeight;
             var tmpy = maxHeight - height
             hist += rect.format(startx, tmpy, width, height);
             {#$(".week-column").append(rect.format(startx,tmpy,width, height));#}
@@ -238,7 +231,9 @@
                         activityDict[item['day']] = item['available'];
                     }
                 )
-                render(activityDict, weekActivity);
+                fillWeek(activityDict, weekActivity);
+                render("2019-01-01", activityDict);
+                render("2018-01-01", activityDict);
                 renderWeek(weekActivity);
                 $(".day").hover(function (event) {
                     console.log($(this).next());
