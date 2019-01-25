@@ -124,8 +124,8 @@
     $(document).ready(function(){
         $.get("crawlstatus",function(msg){
             if(msg.status==0){
-                for(var i = 0; i < msg.allProcess.length; i++){
-                    $("#crawlstatus").append("<div>" +msg.allProcess[i] + "</div>");
+                for(var i = 0; i < msg.data.length; i++){
+                    $("#crawlstatus").append("<div>" +msg.data[i] + "</div>");
                 }
             }
             else if(msg.status == 2){
