@@ -104,7 +104,7 @@ def crawlStatus(request):
             "data":[]}
     if platform.system() == "Linux":
         str1 = os.popen('ps -ef|grep /*.py').read()
-        allProcess = re.findall("py (\d+)$", str1)
+        allProcess = re.findall("py (\d+)$", str1, re.M)
         if len(allProcess) != 0:
             resp["status"] = 0
             resp["data"] = allProcess
