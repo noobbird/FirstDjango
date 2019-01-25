@@ -103,8 +103,8 @@ def crawlStatus(request):
     resp = {"status": 1,
             "data":[]}
     if platform.system() == "Linux":
-        str = os.popen('ps -ef|grep /*.py')
-        allProcess = re.findall("py(\d+)$")
+        str1 = os.popen('ps -ef|grep /*.py').read()
+        allProcess = re.findall("py(\d+)$", str1)
         if len(allProcess) != 0:
             resp["status"] = 0
             resp["data"] = allProcess
@@ -117,9 +117,9 @@ def startCrawl(request):
             "data":[]}
     if platform.system() == "Linux":
         uid = request.GET.get('uid', 54892316)
-        str = os.popen('nohup python /root/music/week.py ' +str(uid) + '>/tmp/weekerr &')
-        str = os.popen('ps -ef|grep /*.py')
-        allProcess = re.findall("py(\d+)$")
+        os.popen('nohup python /root/music/week.py ' +str(uid) + '>/tmp/weekerr &').read()
+        str2 = os.popen('ps -ef|grep /*.py').read()
+        allProcess = re.findall("py(\d+)$", str2, re.M)
         if len(allProcess) != 0:
             resp["status"] = 0
             resp["data"] = allProcess
