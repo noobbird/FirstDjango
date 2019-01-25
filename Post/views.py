@@ -100,19 +100,27 @@ class HourFrequence(generics.ListAPIView):
     
     
 def crawlStatus(request):
-    resp = {"status": 1}
+    resp = {"status": 1,
+            "data":[]}
     if platform.system() == "Linux":
         str = os.popen('ps -ef|grep /*.py')
-        status = re.search('week', str.read())
-        if status != None:
+        allProcess = re.findall("py(\d+)$")
+        if len(allProcess) != 0:
             resp["status"] = 0
+            resp["data"] = allProcess
     else:
         resp["status"] = 2
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 def startCrawl(request):
-    resp = {"status": 1}
+    resp = {"status": 1,
+            "data":[]}
     if platform.system() == "Linux":
-        str = os.popen('nohup python python /root/music/week.py >/tmp/weekerr &')
-        resp["status"] = 0
+        uid = request.GET.get('uid', 54892316)
+        str = os.popen('nohup python /root/music/week.py ' +str(uid) + '>/tmp/weekerr &')
+        str = os.popen('ps -ef|grep /*.py')
+        allProcess = re.findall("py(\d+)$")
+        if len(allProcess) != 0:
+            resp["status"] = 0
+            resp["data"] = allProcess
     return HttpResponse(json.dumps(resp), content_type="application/json")

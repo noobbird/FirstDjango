@@ -57,7 +57,7 @@
     </div>
 </div>
 <h2><a href="activity">活动图</a></h2>
-<div class="crawlstatus"></div>
+<div id="crawlstatus"></div>
 <h2><a href="hot">热度</a></h2>
 <div class="panel-body">
     <table class="table main_table">
@@ -124,20 +124,20 @@
     $(document).ready(function(){
         $.get("crawlstatus",function(msg){
             if(msg.status==0){
-                $(".crawlstatus").css("background","green");
+                for(var i = 0; i < msg.allProcess.length; i++){
+                    $("#crawlstatus").append("<div>" +msg.allProcess[i] + "</div>");
+                }
             }
             else if(msg.status == 2){
-                $(".crawlstatus").css("background","yellow");
+                $("#crawlstatus").append("<div>无进程</div>");
             }
         })
     })
     $('.crawlstatus').click(function () {
         $.get("startcrawl", function (msg) {
             if(msg.status == 0){
-                 $(".crawlstatus").css("background","green");
             }
             else if(msg.status == 1){
-                $(".crawlstatus").css("background","blue");
             }
         })
     })
