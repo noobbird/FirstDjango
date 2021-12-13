@@ -3,7 +3,7 @@ command-not-found==0.3
 Django==2.1.2
 djangorestframework==3.8.2
 language-selector==0.1
-lxml==4.2.5
+lxml==4.6.5
 psycopg2==2.7.5
 psycopg2-binary==2.7.5
 pycrypto==2.6.1
